@@ -1,0 +1,93 @@
+type AddFishBatchPayload = record {
+  weight : float64;
+  fishpond_id : nat64;
+  quantity : nat64;
+  species : text;
+};
+type CreateFishpondPayload = record {
+  contact : text;
+  owner : text;
+  total_capacity : float64;
+  name : text;
+  location : text;
+};
+type Expense = record {
+  id : nat64;
+  date : nat64;
+  description : text;
+  fishpond_id : nat64;
+  category : text;
+  amount : float64;
+};
+type FeedingSchedule = record {
+  id : nat64;
+  feed_type : text;
+  fishpond_id : nat64;
+  schedule_time : nat64;
+  quantity : float64;
+};
+type FishBatch = record {
+  id : nat64;
+  weight : float64;
+  fishpond_id : nat64;
+  quantity : nat64;
+  arrival_date : nat64;
+  species : text;
+};
+type Fishpond = record {
+  id : nat64;
+  contact : text;
+  current_stock : float64;
+  owner : text;
+  total_capacity : float64;
+  name : text;
+  created_at : nat64;
+  location : text;
+};
+type Harvest = record {
+  id : nat64;
+  weight : float64;
+  fishpond_id : nat64;
+  revenue_per_kg : float64;
+  total_revenue : float64;
+  species : text;
+  harvest_date : nat64;
+};
+type Message = variant {
+  Error : text;
+  InvalidPayload : text;
+  NotFound : text;
+  Success : text;
+};
+type RecordExpensePayload = record {
+  description : text;
+  fishpond_id : nat64;
+  category : text;
+  amount : float64;
+};
+type RecordFeedingPayload = record {
+  feed_type : text;
+  fishpond_id : nat64;
+  quantity : float64;
+};
+type RecordHarvestPayload = record {
+  weight : float64;
+  fishpond_id : nat64;
+  revenue_per_kg : float64;
+  species : text;
+};
+type Result = variant { Ok : FishBatch; Err : Message };
+type Result_1 = variant { Ok : float64; Err : Message };
+type Result_2 = variant { Ok : Fishpond; Err : Message };
+type Result_3 = variant { Ok : Expense; Err : Message };
+type Result_4 = variant { Ok : FeedingSchedule; Err : Message };
+type Result_5 = variant { Ok : Harvest; Err : Message };
+service : {
+  add_fish_batch : (AddFishBatchPayload) -> (Result);
+  calculate_total_expenses : (nat64) -> (Result_1) query;
+  calculate_total_revenue : (nat64) -> (Result_1) query;
+  create_fishpond : (CreateFishpondPayload) -> (Result_2);
+  record_expense : (RecordExpensePayload) -> (Result_3);
+  record_feeding : (RecordFeedingPayload) -> (Result_4);
+  record_harvest : (RecordHarvestPayload) -> (Result_5);
+}
